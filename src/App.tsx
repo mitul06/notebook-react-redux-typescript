@@ -1,25 +1,33 @@
 import React from 'react';
-import logo from './logo.svg';
+import { useSelector, useDispatch } from "react-redux";
 import './App.css';
+import NewNote from './components/NewNote';
+import { addNote } from './redux/actions/action';
+import { NoteState } from './redux/reducer/noteReducer';
 
 function App() {
+
+  const note = useSelector<NoteState, NoteState['note']>((state) => state.note);
+
+  const dispatch = useDispatch();
+
+  const onAddNote = (note : string) => {
+    dispatch(addNote(note))
+  }
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+       <h3>NoteBook</h3>
+       <NewNote addNote={onAddNote} />
+       <hr/>
+       <ul>
+         {note.map((note) => {
+           return <li key={note}>{note}</li>
+         })}
+       </ul>
+     </>
+     
   );
 }
 
